@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -56,4 +57,12 @@ public class ToDoController {
 		toDoService.deleteOne(id);
 	}
 
+	@GetMapping("/todos/completed")
+	@Valid List<ToDoResponse> getAllCompleted(@RequestParam boolean print){
+		if (print){
+			return toDoService.printAllCompleted();
+		} else {
+			return toDoService.getAllCompleted();
+		}
+	}
 }

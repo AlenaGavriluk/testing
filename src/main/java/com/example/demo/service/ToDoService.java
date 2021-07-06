@@ -55,4 +55,25 @@ public class ToDoService {
 		toDoRepository.deleteById(id);
 	}
 
+	public List<ToDoResponse> getAllCompleted() {
+		return toDoRepository.findByCompletedAtIsNotNullOrderByCompletedAt().stream()
+				.map(ToDoEntityToResponseMapper::map)
+				.collect(Collectors.toList());
+	}
+
+	public List<ToDoResponse> printAllCompleted() {
+		List<ToDoEntity> completed = toDoRepository.findByCompletedAtIsNotNullOrderByCompletedAt();
+		if (!completed.isEmpty()) {
+			System.out.println("You have " + completed.size() + " completed todos:");
+			for (int i = 0; i < completed.size(); i++){
+				System.out.println(i + 1 + ") " + completed.get(i).getText() +
+						" || " + "completed at: " + completed.get(i).getCompletedAt());
+			}
+		} else {
+			System.out.println("You have not any completed todos.");
+		}
+		return completed.stream()
+				.map(ToDoEntityToResponseMapper::map)
+				.collect(Collectors.toList());
+	}
 }
